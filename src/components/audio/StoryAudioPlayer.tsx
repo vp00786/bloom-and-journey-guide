@@ -5,6 +5,7 @@ import { chapters } from "@/data/chapters";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Volume2, VolumeX, Play, Pause } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 type Language = {
   code: string;
@@ -26,58 +27,78 @@ const StoryAudioPlayer: React.FC = () => {
   const [isMuted, setIsMuted] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(contextLanguage || "en");
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const { toast } = useToast();
   
   const currentChapterId = userProgress.currentChapter;
   const currentChapter = chapters.find(c => c.id === currentChapterId);
   
-  // This would be replaced with actual audio files in a production environment
-  // For now, we'll simulate audio playback
-  const getAudioUrl = (chapterId: number, language: string) => {
-    return `https://example.com/audio/${language}/chapter_${chapterId}.mp3`;
+  const handleSpeakStory = () => {
+    if (!currentChapter) return;
+    
+    if (isPlaying) {
+      window.speechSynthesis.cancel();
+      setIsPlaying(false);
+      return;
+    }
+    
+    const speech = new SpeechSynthesisUtterance();
+    speech.text = currentChapter.content.replace(/<[^>]*>/g, ''); // Remove HTML tags
+    speech.volume = isMuted ? 0 : 1;
+    
+    // Try to set language based on selection
+    switch(selectedLanguage) {
+      case "hi": speech.lang = "hi-IN"; break;
+      case "mr": speech.lang = "mr-IN"; break;
+      case "ta": speech.lang = "ta-IN"; break;
+      case "te": speech.lang = "te-IN"; break;
+      case "ml": speech.lang = "ml-IN"; break;
+      default: speech.lang = "en-US";
+    }
+    
+    speech.onend = () => {
+      setIsPlaying(false);
+    };
+    
+    speech.onerror = () => {
+      setIsPlaying(false);
+      toast({
+        title: "Narration Error",
+        description: `Could not play audio in ${languages.find(l => l.code === selectedLanguage)?.name}. Try another language.`,
+        duration: 3000,
+      });
+    };
+    
+    window.speechSynthesis.speak(speech);
+    setIsPlaying(true);
   };
   
   useEffect(() => {
-    // Reset audio state when chapter changes
-    setIsPlaying(false);
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-    }
+    // Clean up speech synthesis when component unmounts or chapter changes
+    return () => {
+      window.speechSynthesis.cancel();
+      setIsPlaying(false);
+    };
   }, [currentChapterId]);
   
-  const togglePlay = () => {
-    if (!audioRef.current) return;
+  const toggleMute = () => {
+    setIsMuted(!isMuted);
     
     if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      // In a real implementation, we would set the src here if it hasn't been set
-      // For demo purposes, we'll just simulate playback
-      audioRef.current.play().catch(error => {
-        console.error("Failed to play audio:", error);
-        // Show a user-friendly error message in a real app
-      });
+      // If currently playing, restart narration with new volume
+      window.speechSynthesis.cancel();
+      setIsPlaying(false);
+      setTimeout(() => handleSpeakStory(), 50);
     }
-    
-    setIsPlaying(!isPlaying);
-  };
-  
-  const toggleMute = () => {
-    if (!audioRef.current) return;
-    
-    audioRef.current.muted = !isMuted;
-    setIsMuted(!isMuted);
   };
   
   const handleLanguageChange = (value: string) => {
     setSelectedLanguage(value);
-    setIsPlaying(false);
     
-    if (audioRef.current) {
-      audioRef.current.pause();
-      // In a real implementation, we would update the src here
-      // audioRef.current.src = getAudioUrl(currentChapterId, value);
-      audioRef.current.currentTime = 0;
+    if (isPlaying) {
+      // If currently playing, restart narration with new language
+      window.speechSynthesis.cancel();
+      setIsPlaying(false);
+      setTimeout(() => handleSpeakStory(), 50);
     }
   };
   
@@ -89,7 +110,7 @@ const StoryAudioPlayer: React.FC = () => {
       
       <div className="flex flex-wrap items-center gap-4">
         <Button 
-          onClick={togglePlay}
+          onClick={handleSpeakStory}
           variant="outline"
           className="flex items-center gap-2"
         >
@@ -125,13 +146,6 @@ const StoryAudioPlayer: React.FC = () => {
           </Select>
         </div>
       </div>
-      
-      <audio
-        ref={audioRef}
-        src={getAudioUrl(currentChapterId, selectedLanguage)}
-        onEnded={() => setIsPlaying(false)}
-        style={{ display: 'none' }}
-      />
       
       <div className="mt-3 text-sm text-gray-500">
         <p>

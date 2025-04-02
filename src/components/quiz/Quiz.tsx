@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { Check, X } from "lucide-react";
+import { Check, X, BookAudio } from "lucide-react";
 
 type Question = {
   id: string;
@@ -95,12 +95,26 @@ const Quiz: React.FC<QuizProps> = ({
         <h3 className="text-2xl font-bold mb-2">Quiz Completed!</h3>
         <p className="text-lg mb-4">Your score: {score}%</p>
         <p className="mb-6">{message}</p>
-        <Button 
-          className="bg-primary hover:bg-primary/80"
-          onClick={onComplete}
-        >
-          Continue Your Journey
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Button 
+            className="bg-primary hover:bg-primary/80"
+            onClick={onComplete}
+          >
+            Continue Your Journey
+          </Button>
+          <Button 
+            className="bg-accent hover:bg-accent/80 flex items-center gap-2"
+            onClick={() => {
+              onComplete();
+              document.querySelector('[data-value="story"]')?.dispatchEvent(
+                new MouseEvent('click', { bubbles: true })
+              );
+            }}
+          >
+            <BookAudio className="h-4 w-4" />
+            Return to Story
+          </Button>
+        </div>
       </div>
     );
   };
