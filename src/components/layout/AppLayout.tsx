@@ -26,10 +26,10 @@ const AppLayout: React.FC<AppLayoutProps> = ({
           <div className="max-w-7xl mx-auto flex justify-between items-center">
             <div className="flex items-center gap-2">
               <div className="h-10 w-10 bg-primary rounded-full flex items-center justify-center text-white font-bold">
-                PJ
+                LN
               </div>
               <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-pastel-purple bg-clip-text text-transparent">
-                Period Journey
+                Luna
               </h1>
             </div>
             
@@ -52,7 +52,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({
       {showFooter && (
         <footer className="bg-white/70 backdrop-blur-sm py-4 px-6 text-center text-sm text-foreground/70">
           <div className="max-w-7xl mx-auto">
-            <p>Period Journey - A safe space to learn about your body</p>
+            <p>Luna - A safe space to learn about your body</p>
             <p className="mt-1">
               All information is reviewed by healthcare professionals and designed for educational purposes.
             </p>

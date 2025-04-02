@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect } from "react";
 import { useStory } from "@/context/StoryContext";
 import { chapters } from "@/data/chapters";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ChevronLeft, ChevronRight, Heart, Calendar, Droplet, ThumbsUp, Confetti } from "lucide-react";
+import { ChevronLeft, ChevronRight, Heart, Calendar, Droplet, ThumbsUp, PartyPopper } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
 const StoryContent: React.FC = () => {
@@ -17,7 +16,6 @@ const StoryContent: React.FC = () => {
   const chapter = chapters.find(c => c.id === currentChapter);
   
   useEffect(() => {
-    // Clean up confetti when unmounting
     return () => {
       const confettiElements = document.querySelectorAll('.confetti');
       confettiElements.forEach(el => el.remove());
@@ -27,14 +25,12 @@ const StoryContent: React.FC = () => {
   const createConfetti = () => {
     setShowConfetti(true);
     
-    // Create confetti elements dynamically
     const confettiContainer = document.createElement('div');
     confettiContainer.className = 'confetti fixed inset-0 z-50 pointer-events-none';
     document.body.appendChild(confettiContainer);
     
     const colors = ['#FF577F', '#FF884B', '#FFDEB4', '#FFF9CA', '#C3F8FF', '#ABD9FF', '#FFC0D9'];
     
-    // Create 150 confetti elements
     for (let i = 0; i < 150; i++) {
       const confetti = document.createElement('div');
       const color = colors[Math.floor(Math.random() * colors.length)];
@@ -50,7 +46,6 @@ const StoryContent: React.FC = () => {
       confetti.style.zIndex = '9999';
       confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
       
-      // Add animation with random duration and delay
       confetti.style.animation = `
         fall ${Math.random() * 3 + 2}s linear ${Math.random() * 5}s forwards,
         sway ${Math.random() * 5 + 3}s ease-in-out infinite alternate
@@ -59,7 +54,6 @@ const StoryContent: React.FC = () => {
       confettiContainer.appendChild(confetti);
     }
     
-    // Remove confetti after 8 seconds
     setTimeout(() => {
       confettiContainer.remove();
       setShowConfetti(false);
@@ -111,7 +105,6 @@ const StoryContent: React.FC = () => {
     });
   };
   
-  // Insert CSS for confetti animations in the document head
   if (typeof document !== 'undefined' && !document.getElementById('confetti-styles')) {
     const styleElement = document.createElement('style');
     styleElement.id = 'confetti-styles';
@@ -231,13 +224,13 @@ const StoryContent: React.FC = () => {
               createConfetti();
               toast({
                 title: "Congratulations! 🎉",
-                description: "You've completed all chapters! You're now a Period Graduate!",
+                description: "You've completed all chapters! You're now a Luna Graduate!",
                 duration: 5000,
               });
               unlockBadge("period_graduate");
             }}
           >
-            <Confetti className="h-4 w-4 mr-2" />
+            <PartyPopper className="h-4 w-4 mr-2" />
             Celebrate Completion
           </Button>
         )}

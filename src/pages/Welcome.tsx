@@ -30,7 +30,7 @@ const Welcome: React.FC = () => {
     <AppLayout className="max-w-5xl mx-auto" showHeader={false}>
       <div className="text-center mb-8">
         <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-pastel-purple bg-clip-text text-transparent">
-          Welcome to Period Journey
+          Welcome to Luna
         </h1>
         <p className="text-xl">
           A friendly guide to understanding your first period
