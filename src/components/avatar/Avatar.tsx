@@ -13,7 +13,7 @@ const Avatar: React.FC<AvatarProps> = ({
   size = "md", 
   className = "" 
 }) => {
-  const { hairStyle, skinTone, outfit } = options;
+  const { hairStyle, skinTone, outfit, hairColor } = options;
   
   // Size classes
   const sizeClasses = {
@@ -47,7 +47,7 @@ const Avatar: React.FC<AvatarProps> = ({
 
   // Get the appropriate colors
   const skinColor = skinToneColors[skinTone] || skinToneColors.medium;
-  const hairColor = hairColors.brown; // Default to brown for now
+  const avatarHairColor = hairColors[hairColor || "brown"];
   const outfitColor = outfitColors[outfit] || outfitColors.casual;
 
   return (
@@ -63,13 +63,16 @@ const Avatar: React.FC<AvatarProps> = ({
       {/* Hair */}
       <div className="absolute inset-0">
         {hairStyle === "straight" && (
-          <div className="absolute" style={{ top: "-10%", left: "-10%", right: "-10%", height: "50%", backgroundColor: hairColor, borderRadius: "100% 100% 0 0" }} />
+          <div className="absolute" style={{ top: "-10%", left: "-10%", right: "-10%", height: "50%", backgroundColor: avatarHairColor, borderRadius: "100% 100% 0 0" }} />
         )}
         {hairStyle === "curly" && (
-          <div className="absolute" style={{ top: "-15%", left: "-15%", right: "-15%", height: "55%", backgroundColor: hairColor, borderRadius: "100% 100% 50% 50%" }} />
+          <div className="absolute" style={{ top: "-15%", left: "-15%", right: "-15%", height: "55%", backgroundColor: avatarHairColor, borderRadius: "100% 100% 50% 50%" }} />
         )}
         {hairStyle === "short" && (
-          <div className="absolute" style={{ top: "-5%", left: "-5%", right: "-5%", height: "40%", backgroundColor: hairColor, borderRadius: "100% 100% 30% 30%" }} />
+          <div className="absolute" style={{ top: "-5%", left: "-5%", right: "-5%", height: "40%", backgroundColor: avatarHairColor, borderRadius: "100% 100% 30% 30%" }} />
+        )}
+        {hairStyle === "long" && (
+          <div className="absolute" style={{ top: "-10%", left: "-15%", right: "-15%", height: "70%", backgroundColor: avatarHairColor, borderRadius: "100% 100% 40% 40%" }} />
         )}
       </div>
 

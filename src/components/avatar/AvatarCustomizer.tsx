@@ -5,9 +5,19 @@ import Avatar from "./Avatar";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 
 const AvatarCustomizer: React.FC = () => {
   const { avatarOptions, updateAvatarOptions } = useStory();
+  const { toast } = useToast();
+
+  const handleSaveAvatar = () => {
+    toast({
+      title: "Avatar Saved!",
+      description: "Your avatar has been updated and will appear throughout your journey.",
+      duration: 3000,
+    });
+  };
 
   return (
     <div className="p-6 rounded-xl bg-pastel-purple/20 flex flex-col items-center gap-6">
@@ -37,6 +47,37 @@ const AvatarCustomizer: React.FC = () => {
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="short" id="hair-short" />
               <Label htmlFor="hair-short">Short</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="long" id="hair-long" />
+              <Label htmlFor="hair-long">Long</Label>
+            </div>
+          </RadioGroup>
+        </div>
+
+        {/* Hair Color */}
+        <div className="p-4 bg-white/60 rounded-lg shadow-sm">
+          <Label className="text-base font-semibold mb-2 block">Hair Color</Label>
+          <RadioGroup
+            value={avatarOptions.hairColor || "brown"}
+            onValueChange={(value) => updateAvatarOptions({ hairColor: value })}
+            className="flex flex-col gap-2"
+          >
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="brown" id="hair-brown" />
+              <Label htmlFor="hair-brown">Brown</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="black" id="hair-black" />
+              <Label htmlFor="hair-black">Black</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="blonde" id="hair-blonde" />
+              <Label htmlFor="hair-blonde">Blonde</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="red" id="hair-red" />
+              <Label htmlFor="hair-red">Red</Label>
             </div>
           </RadioGroup>
         </div>
@@ -92,7 +133,11 @@ const AvatarCustomizer: React.FC = () => {
         </div>
       </div>
 
-      <Button className="mt-4 bg-pastel-pink hover:bg-pastel-pink/80 text-foreground" size="lg">
+      <Button 
+        className="mt-4 bg-pastel-pink hover:bg-pastel-pink/80 text-foreground" 
+        size="lg"
+        onClick={handleSaveAvatar}
+      >
         Save Your Avatar
       </Button>
     </div>

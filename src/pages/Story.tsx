@@ -13,9 +13,10 @@ import { quizzes } from "@/data/quizzes";
 import Quiz from "@/components/quiz/Quiz";
 import QASection from "@/components/qa/QASection";
 import StoryAudioPlayer from "@/components/audio/StoryAudioPlayer";
+import { ArrowLeft, Home } from "lucide-react";
 
 const Story: React.FC = () => {
-  const { userProgress, avatarOptions } = useStory();
+  const { userProgress, avatarOptions, completeChapter } = useStory();
   const [activeTab, setActiveTab] = useState("story");
   const [showQuiz, setShowQuiz] = useState(false);
   
@@ -35,13 +36,19 @@ const Story: React.FC = () => {
     setShowQuiz(false);
   };
   
+  const handleGoToFirstChapter = () => {
+    completeChapter(1);
+    setActiveTab("story");
+    setShowQuiz(false);
+  };
+  
   return (
     <AppLayout>
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="md:col-span-1 space-y-6">
             <div className="bg-white/60 backdrop-blur-sm rounded-lg shadow-sm p-4 text-center">
-              <Avatar options={avatarOptions} size="lg" className="mx-auto" />
+              <Avatar options={avatarOptions} size="lg" className="mx-auto animate-float" />
               <Button 
                 variant="outline" 
                 className="mt-4 w-full"
@@ -52,6 +59,29 @@ const Story: React.FC = () => {
             </div>
             
             <ChapterNav />
+            
+            <div className="flex flex-col gap-2">
+              <Button 
+                variant="outline" 
+                className="w-full flex items-center gap-2 bg-white/60 hover:bg-white/80"
+                onClick={handleGoToFirstChapter}
+              >
+                <Home className="w-4 h-4" />
+                <span>Back to Chapter 1</span>
+              </Button>
+              
+              {currentChapterId > 1 && (
+                <Button 
+                  variant="outline" 
+                  className="w-full flex items-center gap-2 bg-white/60 hover:bg-white/80"
+                  onClick={() => completeChapter(currentChapterId - 1)}
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  <span>Previous Chapter</span>
+                </Button>
+              )}
+            </div>
+            
             <BadgesCollection />
           </div>
           

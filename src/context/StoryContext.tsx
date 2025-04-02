@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 // Avatar customization options
@@ -6,6 +5,7 @@ export type AvatarOptions = {
   hairStyle: string;
   skinTone: string;
   outfit: string;
+  hairColor?: string;
 };
 
 // User progress tracking
@@ -45,6 +45,7 @@ const defaultAvatarOptions: AvatarOptions = {
   hairStyle: "straight",
   skinTone: "medium",
   outfit: "casual",
+  hairColor: "brown",
 };
 
 const defaultUserProgress: UserProgress = {
@@ -106,7 +107,7 @@ export const StoryProvider: React.FC<{ children: React.ReactNode }> = ({
       return {
         ...prev,
         completedChapters,
-        currentChapter: Math.max(prev.currentChapter, chapterNumber + 1)
+        currentChapter: chapterNumber
       };
     });
   };
