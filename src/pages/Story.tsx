@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useStory } from "@/context/StoryContext";
 import AppLayout from "@/components/layout/AppLayout";
 import Avatar from "@/components/avatar/Avatar";
+import AvatarCustomizer from "@/components/avatar/AvatarCustomizer";
 import ChapterNav from "@/components/chapters/ChapterNav";
 import StoryContent from "@/components/chapters/StoryContent";
 import BadgesCollection from "@/components/badges/BadgesCollection";
