@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useStory } from "@/context/StoryContext";
 import AppLayout from "@/components/layout/AppLayout";
 import Avatar from "@/components/avatar/Avatar";
@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { quizzes } from "@/data/quizzes";
 import Quiz from "@/components/quiz/Quiz";
 import QASection from "@/components/qa/QASection";
+import StoryAudioPlayer from "@/components/audio/StoryAudioPlayer";
 
 const Story: React.FC = () => {
   const { userProgress, avatarOptions } = useStory();
@@ -65,6 +66,7 @@ const Story: React.FC = () => {
               
               <TabsContent value="story">
                 <StoryContent />
+                <StoryAudioPlayer />
                 
                 {currentChapterQuiz && !showQuiz && (
                   <div className="mt-6 text-center">
